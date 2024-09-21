@@ -186,7 +186,7 @@ class Transaction implements Executor {
   }
 
   @override
-  Future<dynamic> _executeWithCodec<T>(String methodName, Codec outCodec,
+  Future<dynamic> executeWithCodec<T>(String methodName, Codec outCodec,
       Codec inCodec, Cardinality resultCard, String query, dynamic args) {
     return _runOp(
         methodName,
