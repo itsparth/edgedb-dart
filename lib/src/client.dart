@@ -480,7 +480,7 @@ abstract class Executor {
   /// [docs page](../edgedb-library.html).
   Future<String> queryRequiredSingleJSON(String query, [dynamic args]);
 
-  Future<dynamic> _executeWithCodec<T>(String methodName, Codec outCodec,
+  Future<dynamic> executeWithCodec<T>(String methodName, Codec outCodec,
       Codec inCodec, Cardinality resultCard, String query, dynamic args);
 }
 
@@ -492,7 +492,7 @@ Future<dynamic> executeWithCodec<T>(
     Cardinality resultCard,
     String query,
     dynamic args) {
-  return executor._executeWithCodec<T>(
+  return executor.executeWithCodec<T>(
       methodName, outCodec, inCodec, resultCard, query, args);
 }
 
@@ -750,7 +750,7 @@ class Client implements Executor {
   }
 
   @override
-  Future<dynamic> _executeWithCodec<T>(String methodName, Codec outCodec,
+  Future<dynamic> executeWithCodec<T>(String methodName, Codec outCodec,
       Codec inCodec, Cardinality resultCard, String query, dynamic args) async {
     final holder = await _pool.acquireHolder(_options);
     try {
@@ -765,11 +765,6 @@ class Client implements Executor {
     } finally {
       await holder.release();
     }
-  }
-
-  Future<dynamic> executeWithCodec<T>(String methodName, Codec outCodec,
-      Codec inCodec, Cardinality resultCard, String query, dynamic args) {
-    return _executeWithCodec<T>(methodName, outCodec, inCodec, resultCard, query, args);
   }
 }
 
