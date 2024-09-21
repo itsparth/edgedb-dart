@@ -766,6 +766,11 @@ class Client implements Executor {
       await holder.release();
     }
   }
+
+  Future<dynamic> executeWithCodec<T>(String methodName, Codec outCodec,
+      Codec inCodec, Cardinality resultCard, String query, dynamic args) {
+    return _executeWithCodec<T>(methodName, outCodec, inCodec, resultCard, query, args);
+  }
 }
 
 /// Creates a new [Client] instance with the provided connection options.
