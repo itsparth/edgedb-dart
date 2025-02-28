@@ -1,3 +1,4 @@
+// ignore: dangling_library_doc_comments
 /// This library provides a [build_runner](https://pub.dev/packages/build_runner)
 /// builder: [edgeqlCodegenBuilder], for generating fully typed query methods
 /// from `.edgeql` files.
