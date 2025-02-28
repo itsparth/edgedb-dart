@@ -81,7 +81,7 @@ class ArrayCodec<T> extends Codec {
     buf.discard(8); // ignore flags + reserved
 
     if (ndims == 0) {
-      return [];
+      return <T>[];
     }
     if (ndims != 1) {
       throw ProtocolError("only 1-dimensional arrays are supported");
