@@ -1,7 +1,7 @@
 /*!
- * This source file is part of the EdgeDB open source project.
+ * This source file is part of the Gel open source project.
  *
- * Copyright 2020-present MagicStack Inc. and the EdgeDB authors.
+ * Copyright 2020-present MagicStack Inc. and the Gel authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -74,7 +74,7 @@ class Transaction implements Executor {
   Future<T> _waitForConnAbort<T>() async {
     final abortError = await _conn.connAbortWaiter.future;
 
-    if (abortError is EdgeDBError &&
+    if (abortError is GelError &&
         abortError.source is TransactionTimeoutError) {
       throw abortError.source!;
     } else {
@@ -114,10 +114,36 @@ class Transaction implements Executor {
   }
 
   @override
+  Future<void> executeSQL(String query, [dynamic args]) async {
+    await _runOp(
+        'executeSQL',
+        () => _conn.fetch(
+            language: Language.sql,
+            query: query,
+            args: args,
+            outputFormat: OutputFormat.none,
+            expectedCardinality: Cardinality.noResult,
+            state: _holder.options.session));
+  }
+
+  @override
   Future<List<dynamic>> query(String query, [dynamic args]) {
     return _runOp(
         'query',
         () async => await _conn.fetch(
+            query: query,
+            args: args,
+            outputFormat: OutputFormat.binary,
+            expectedCardinality: Cardinality.many,
+            state: _holder.options.session) as List<dynamic>);
+  }
+
+  @override
+  Future<List<dynamic>> querySQL(String query, [dynamic args]) {
+    return _runOp(
+        'querySQL',
+        () async => await _conn.fetch(
+            language: Language.sql,
             query: query,
             args: args,
             outputFormat: OutputFormat.binary,
