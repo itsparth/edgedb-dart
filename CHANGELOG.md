@@ -1,3 +1,18 @@
+# 0.6.0
+
+- Add support for new `GEL_*` env vars, and the renamed `gel.toml` introduced
+  with Gel 6.0
+- Add support for running SQL queries with new `.querySQL` and `.executeSQL`
+  methods on Gel 6.0
+
+## Breaking changes!
+
+- The `edgedb` library has been renamed to `gel`. Following migration steps are
+  needed:
+  - Update the `edgedb` dependency to `gel` in your pubspec.yaml
+  - Update imports to `import 'package:gel/gel.dart';`
+  - Update any usage of the `EdgeDBError` class in your code with `GelError`
+
 # 0.5.1
 
 - Fix bug in decoding of secret key JWT payload
